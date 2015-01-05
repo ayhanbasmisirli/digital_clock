@@ -1,27 +1,28 @@
 function ready (){
 	
 	
-	var clock1 = createClock('clock_element');
+	var clock1 = new Clock('clock_element');
 }
 
-function createClock(id){
-         var c = new Object();
+function Clock(id){
+       
  	
- 	c.updateClock = function(){
+ 	this.updateClock = function(){
  		var date = new Date()
 		var element = document.getElementById(id);
 		element.innerHTML =  this.zerocorrect(date.getHours())+":"+this.zerocorrect(date.getMinutes())+":"+this.zerocorrect(date.getSeconds())
 		console.log(this);
  	};
 
- 	c.zerocorrect =function(val){
+ 	this.zerocorrect =function(val){
  		if(val<10) val = "0"+val;
 		return val;
 	};
  	
- 	setInterval(function(){c.updateClock()}, 1000);
- 	c.updateClock();
- 	return c;
+ 	var that = this; //function inside the set interval doesnt have access the object refering so keep the object on we refer variable to 
+ 	setInterval(function(){that.updateClock()}, 1000);
+ 	this.updateClock();
+ 	
 }
 
 
