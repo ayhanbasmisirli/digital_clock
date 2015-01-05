@@ -1,20 +1,28 @@
 function ready (){
 	
-	setInterval(updateClock, 1000);
-	updateClock();
 	
+	var clock1 = createClock('clock_element');
 }
-function zerocorrect(val){
-	if(val<10) {
-		return "0"+val;
 
-	}else{
+function createClock(id){
+         var c = new Object();
+ 	
+ 	c.updateClock = function(){
+ 		var date = new Date()
+		var element = document.getElementById(id);
+		element.innerHTML =  this.zerocorrect(date.getHours())+":"+this.zerocorrect(date.getMinutes())+":"+this.zerocorrect(date.getSeconds())
+		console.log(this);
+ 	};
+
+ 	c.zerocorrect =function(val){
+ 		if(val<10) val = "0"+val;
 		return val;
-	}
+	};
+ 	
+ 	setInterval(function(){c.updateClock()}, 1000);
+ 	c.updateClock();
+ 	return c;
 }
-function updateClock(){
-	var clock = new Date()
-	var element = document.getElementById('clock');
-	element.innerHTML = zerocorrect(clock.getHours())+":"+zerocorrect(clock.getMinutes())+":"+zerocorrect(clock.getSeconds())
-}
+
+
 window.onload = ready

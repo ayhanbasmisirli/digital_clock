@@ -4,7 +4,7 @@ position: fixed;
  left:50%;
  transform:translate(-50%,-50%);
 }
-#clock{
+#clock_element{
 font-family: Orbitron;
 font-size: 100px;
 }
