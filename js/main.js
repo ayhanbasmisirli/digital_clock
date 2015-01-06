@@ -6,16 +6,33 @@ function ready() {
 }
 
 
+Date.__interval = 0;
+Date.__aDates = [];
+Date.addToInterval = function(date){
+	this.__aDates.push(date)
+	if (!Date.__interval) {
+		Date.__interval = setInterval(function(){Date.updateDates()}, 1000)	
+	};
+}
+Date.updateDates = function(){
+	console.log(this.__aDates.length);
+	for(var i =0 ;i<this.__aDates.length;i++)
+	this.__aDates[i].updateSecond();	
+
+}
+
 Date.prototype.updateSecond = function() {
+    //Date.addToInterval();		
     this.setSeconds(this.getSeconds() + 1)
 };
 
 
 Date.prototype.autoClock = function(isAuto){
-	clearInterval(this.clockInterval)
+	//clearInterval(this.clockInterval)
 	if (isAuto) {
-		var that = this
-		this.clockInterval = setInterval(function(){that.updateSecond()},1000)
+		// var that = this
+		// this.clockInterval = setInterval(function(){that.updateSecond()},1000)
+		Date.addToInterval(this)
 	}
 };
 
