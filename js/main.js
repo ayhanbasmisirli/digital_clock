@@ -1,9 +1,14 @@
 function ready() {
 
 
-    var clock1 = new Clock('clock_element', 120);
-    var clock2 = new Clock('clock_element2', -300, 'Toronto');
+    var clock1 = new com.ankasoft.Clock ('clock_element', 120);
+    var clock2 = new com.ankasoft.Clock ('clock_element2', -300, 'Toronto');
 }
+
+
+var com = com  || {};
+com.ankasoft = com.ankasoft || {};
+
 
 
 Date.__interval = 0;
@@ -36,7 +41,7 @@ Date.prototype.autoClock = function(isAuto){
 	}
 };
 
-function Clock(id, offset, label) {
+com.ankasoft.Clock = function (id, offset, label) {
 
     offset = offset || 0;
     label = label || ' ';
@@ -57,7 +62,7 @@ function Clock(id, offset, label) {
 
 }
 
-Clock.prototype.updateClock = function() {
+com.ankasoft.Clock.prototype.updateClock = function() {
     var date = this.d
      //date.updateSecond();
     var element = document.getElementById(this.id);
@@ -66,7 +71,7 @@ Clock.prototype.updateClock = function() {
 
 };
 
-Clock.prototype.zerocorrect = function(val) {
+com.ankasoft.Clock.prototype.zerocorrect = function(val) {
     if (val < 10) val = "0" + val;
     return val;
 };
