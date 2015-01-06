@@ -3,6 +3,7 @@ function ready() {
 
     var clock1 = new com.ankasoft.Clock ('clock_element', 120);
     var clock2 = new com.ankasoft.Clock ('clock_element2', -300, 'Toronto');
+    var clock3  = new com.ankasoft.TextClock('clock_element3')
 }
 
 
@@ -76,5 +77,10 @@ com.ankasoft.Clock.prototype.zerocorrect = function(val) {
     return val;
 };
 
+com.ankasoft.TextClock = function(id, offset, label){
+	com.ankasoft.Clock.apply(this,arguments)
+}
+com.ankasoft.TextClock.prototype = Object.create(com.ankasoft.Clock.prototype);
+com.ankasoft.TextClock.prototype.constructor = com.ankasoft.TextClock;
 
 window.onload = ready
