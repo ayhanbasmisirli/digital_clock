@@ -2,6 +2,9 @@ function ready (){
 	
 	
 	var clock1 = new Clock('clock_element');
+	var clock2 = new Clock('clock_element2');
+	var  d  =new Date();
+	console.log(d.getTimezoneOffset()/60)
 }
 
 function Clock(id){
@@ -12,6 +15,7 @@ function Clock(id){
 		var element = document.getElementById(id);
 		element.innerHTML =  this.zerocorrect(date.getHours())+":"+this.zerocorrect(date.getMinutes())+":"+this.zerocorrect(date.getSeconds())
 		console.log(this);
+		
  	};
 
  	this.zerocorrect =function(val){
