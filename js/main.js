@@ -67,10 +67,14 @@ com.ankasoft.Clock.prototype.updateClock = function() {
     var date = this.d
      //date.updateSecond();
     var element = document.getElementById(this.id);
-    element.innerHTML = this.zerocorrect(date.getHours()) + ":" + this.zerocorrect(date.getMinutes()) + ":" + this.zerocorrect(date.getSeconds()) + ' ' + this.label
+    element.innerHTML = this.formatDisplay(date.getHours(),date.getMinutes(),date.getSeconds(),this.label);
     //console.log(this);
 
 };
+com.ankasoft.Clock.prototype.formatDisplay =function(h,m,s,label){
+
+	return this.zerocorrect(h) + ":" + this.zerocorrect(m) + ":" + this.zerocorrect(s) + ' ' + label;
+}
 
 com.ankasoft.Clock.prototype.zerocorrect = function(val) {
     if (val < 10) val = "0" + val;
@@ -83,6 +87,11 @@ com.ankasoft.TextClock = function(id, offset, label){
 com.ankasoft.TextClock.prototype = createObject(com.ankasoft.Clock.prototype);
 com.ankasoft.TextClock.prototype.constructor = com.ankasoft.TextClock;
 
+
+com.ankasoft.TextClock.prototype.formatDisplay =function(h,m,s,label){
+
+	return this.zerocorrect(h) + "Hours" + this.zerocorrect(m) + "Minutes" + this.zerocorrect(s) + ' Seconds' + label;
+}
 
 
 function createObject(proto){
