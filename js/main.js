@@ -80,7 +80,16 @@ com.ankasoft.Clock.prototype.zerocorrect = function(val) {
 com.ankasoft.TextClock = function(id, offset, label){
 	com.ankasoft.Clock.apply(this,arguments)
 }
-com.ankasoft.TextClock.prototype = Object.create(com.ankasoft.Clock.prototype);
+com.ankasoft.TextClock.prototype = createObject(com.ankasoft.Clock.prototype);
 com.ankasoft.TextClock.prototype.constructor = com.ankasoft.TextClock;
+
+
+
+function createObject(proto){
+	function c(){}
+	c.prototype = proto
+	return new c();
+}
+
 
 window.onload = ready
