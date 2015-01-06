@@ -1,20 +1,27 @@
 function ready (){
 	
 	
-	var clock1 = new Clock('clock_element');
-	var clock2 = new Clock('clock_element2');
-	var  d  =new Date();
-	console.log(d.getTimezoneOffset()/60)
+	var clock1 = new Clock('clock_element',120);
+	var clock2 = new Clock('clock_element2',-300,'Toronto');
+	
+	
+	
+
+
 }
 
-function Clock(id){
-       
- 	
+function Clock(id,offset,label){
+       	
+       	offset = offset || 0;
+       	label = label || ' ';
+       	var  d  = new Date();
+ 	this.offset = (offset+d.getTimezoneOffset())*60*1000;
  	this.updateClock = function(){
  		var date = new Date()
+ 		date = new Date(this.offset+date.getTime());
 		var element = document.getElementById(id);
-		element.innerHTML =  this.zerocorrect(date.getHours())+":"+this.zerocorrect(date.getMinutes())+":"+this.zerocorrect(date.getSeconds())
-		console.log(this);
+		element.innerHTML =  this.zerocorrect(date.getHours())+":"+this.zerocorrect(date.getMinutes())+":"+this.zerocorrect(date.getSeconds())+' '+label
+		//console.log(this);
 		
  	};
 
