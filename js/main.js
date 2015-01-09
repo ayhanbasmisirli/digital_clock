@@ -1,9 +1,9 @@
 function ready() {
 
 
-    var clock1 = new com.ankasoft.Clock ('clock_element', 120);
-    var clock2 = new com.ankasoft.Clock ('clock_element2', -300, 'Toronto');
-    var clock3  = new com.ankasoft.TextClock('clock_element3')
+    var clock1 = new com.ankasoft.AlarmClock ('clock_element', -300);
+    var clock2 = new com.ankasoft.TextClock ('clock_element2', -300, 'Toronto');
+    var clock3  = new com.ankasoft.Clock('clock_element3',-300)
 }
 
 
@@ -48,7 +48,7 @@ com.ankasoft.Clock = function (id, offset, label) {
     label = label || ' ';
     var d = new Date();
     var offset = (offset + d.getTimezoneOffset()) * 60 * 1000;
-    console.log(d.autoClock(true));
+ 
     this.d = new Date(offset + d.getTime());
     this.d.autoClock(true);
     this.id = id;
@@ -90,14 +90,44 @@ com.ankasoft.TextClock.prototype.constructor = com.ankasoft.TextClock;
 
 com.ankasoft.TextClock.prototype.formatDisplay =function(h,m,s,label){
 
-	return this.zerocorrect(h) + "Hours" + this.zerocorrect(m) + "Minutes" + this.zerocorrect(s) + ' Seconds' + label;
+	return this.zerocorrect(h) + ":" + this.zerocorrect(m) + ":" + this.zerocorrect(s) + ':' + label;
 }
 
 
+
+
+
+
+com.ankasoft.AlarmClock = function(id, offset, label,alarmHour,alarmMin){
+    com.ankasoft.Clock.apply(this,arguments)
+    this.alarmHour = alarmHour;
+    this.alarmMin = alarmMin;
+}
+com.ankasoft.AlarmClock.prototype = createObject(com.ankasoft.Clock.prototype,com.ankasoft.AlarmClock);
+
+com.ankasoft.AlarmClock.prototype.formatDisplay =function(h,m,s,label){
+    var output;
+    if (h == this.alarmHour && m == this.alarmMin ) {
+        output = "Alarm Wake up";
+        var snd = new Audio("beep.mp3");
+        snd.play()
+
+    }else{
+         output = this.zerocorrect(h) + "-" + this.zerocorrect(m) + "-" + this.zerocorrect(s) 
+    }
+       
+    return output ;
+
+
+}
+
+
+
+
 function createObject(proto){
-	function c(){}
-	c.prototype = proto
-	return new c();
+    function c(){}
+    c.prototype = proto
+    return new c();
 }
 
 
