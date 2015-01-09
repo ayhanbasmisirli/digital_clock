@@ -123,7 +123,17 @@ com.ankasoft.AlarmClock = function(id, offset, label){
 
         that.alarmHour = parseInt(a[0]);
         that.alarmMin = parseInt(a[1]);
-        console.log(that.alarmHour, that.alarmMin);
+
+        if ((that.alarmHour >= 0 && that.alarmHour < 24) && (that.alarmHour >= 0 && that.alarmHour < 60)) { 
+
+                var event  = new Event("restart_tick");
+                this.dispatchEvent(event);
+
+        }
+        
+        that.tick(true);
+    });
+    this.dom.addEventListener('restart_tick', function(){
         that.tick(true);
     });
 }
