@@ -34,7 +34,7 @@ Date.prototype.updateSecond = function() {
 
 
 Date.prototype.autoClock = function(isAuto){
-	//clearInterval(this.clockInterval)
+	clearInterval(this.clockInterval)
 	if (isAuto) {
 		// var that = this
 		// this.clockInterval = setInterval(function(){that.updateSecond()},1000)
@@ -53,16 +53,25 @@ com.ankasoft.Clock = function (id, offset, label) {
     this.d.autoClock(true);
     this.id = id;
     this.label = label;
-
-
-    var that = this; //function inside the set interval doesnt have access the object refering so keep the object on we refer variable to 
-    setInterval(function() {
-        that.updateClock()
-    }, 1000);
-    this.updateClock();
+    this.tick(true);
+   
+  
+    
 
 }
+com.ankasoft.Clock.prototype.tick =function(isTick){
+    clearInterval(this.clockInterval)
+     var that = this; //function inside the set interval doesnt have access the object refering so keep the object on we refer variable to 
+    if (isTick) {
+        this.clockInterval = setInterval(function() {
+        that.updateClock()
+        }, 1000);
+        console.log("a");
+        this.updateClock();
+    }
+    
 
+}
 com.ankasoft.Clock.prototype.updateClock = function() {
     var date = this.d
      //date.updateSecond();
@@ -102,6 +111,16 @@ com.ankasoft.AlarmClock = function(id, offset, label,alarmHour,alarmMin){
     com.ankasoft.Clock.apply(this,arguments)
     this.alarmHour = alarmHour;
     this.alarmMin = alarmMin;
+    this.dom = document.getElementById(id);
+    this.dom.contentEditable = true;
+    var that = this
+    this.dom.addEventListener('focus', function(){
+        that.tick(false);
+        console.log(that);
+    });
+     this.dom.addEventListener('blur', function(){
+        that.tick(true);
+    });
 }
 com.ankasoft.AlarmClock.prototype = createObject(com.ankasoft.Clock.prototype,com.ankasoft.AlarmClock);
 
@@ -113,7 +132,7 @@ com.ankasoft.AlarmClock.prototype.formatDisplay =function(h,m,s,label){
         snd.play()
 
     }else{
-         output = this.zerocorrect(h) + "-" + this.zerocorrect(m) + "-" + this.zerocorrect(s) 
+         output = com.ankasoft.Clock.prototype.formatDisplay.apply(this,arguments);
     }
        
     return output ;
