@@ -3,7 +3,7 @@ function ready() {
 
     var clock1 = new com.ankasoft.AlarmClock ('clock_element', -300);
     var clock2 = new com.ankasoft.TextClock ('clock_element2', -300, 'Toronto');
-    var clock3  = new com.ankasoft.Clock('clock_element3',-300)
+    var clock3  = new com.ankasoft.TextClock('clock_element3',120,'Kayseri')
 }
 
 
@@ -21,7 +21,7 @@ Date.addToInterval = function(date){
 	};
 }
 Date.updateDates = function(){
-	console.log(this.__aDates.length);
+	//console.log(this.__aDates.length);
 	for(var i =0 ;i<this.__aDates.length;i++)
 	this.__aDates[i].updateSecond();	
 
@@ -66,7 +66,7 @@ com.ankasoft.Clock.prototype.tick =function(isTick){
         this.clockInterval = setInterval(function() {
         that.updateClock()
         }, 1000);
-        console.log("a");
+        
         this.updateClock();
     }
     
@@ -107,18 +107,23 @@ com.ankasoft.TextClock.prototype.formatDisplay =function(h,m,s,label){
 
 
 
-com.ankasoft.AlarmClock = function(id, offset, label,alarmHour,alarmMin){
+com.ankasoft.AlarmClock = function(id, offset, label){
     com.ankasoft.Clock.apply(this,arguments)
-    this.alarmHour = alarmHour;
-    this.alarmMin = alarmMin;
+   
     this.dom = document.getElementById(id);
     this.dom.contentEditable = true;
     var that = this
     this.dom.addEventListener('focus', function(){
+        this.innerHTML = this.innerHTML.slice(0,this.innerHTML.lastIndexOf(':'));
         that.tick(false);
         console.log(that);
     });
      this.dom.addEventListener('blur', function(){
+        var a = this.innerHTML.split(':');
+
+        that.alarmHour = parseInt(a[0]);
+        that.alarmMin = parseInt(a[1]);
+        console.log(that.alarmHour, that.alarmMin);
         that.tick(true);
     });
 }
