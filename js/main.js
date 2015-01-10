@@ -22,8 +22,16 @@ Date.addToInterval = function(date){
 }
 Date.updateDates = function(){
 	//console.log(this.__aDates.length);
-	for(var i =0 ;i<this.__aDates.length;i++)
-	this.__aDates[i].updateSecond();	
+	for(var i =0 ;i<this.__aDates.length;i++){
+        if (this.__aDates[i] instanceof Date) {
+            this.__aDates[i].updateSecond();
+        }else if(this.__aDates[i] instanceof Function){
+            this.__aDates[i]();
+        }else if(this.__aDates[i] && this.__aDates[i]['update']){
+            this.__aDates[i].update();
+        }
+    }
+		
 
 }
 
@@ -53,6 +61,10 @@ com.ankasoft.Clock = function (id, offset, label) {
     this.d.autoClock(true);
     this.id = id;
     this.label = label;
+
+    var that = this;
+    Date.addToInterval(function() {
+        that.updateClock();});
     this.tick(true);
    
   
@@ -60,24 +72,28 @@ com.ankasoft.Clock = function (id, offset, label) {
 
 }
 com.ankasoft.Clock.prototype.tick =function(isTick){
-    clearInterval(this.clockInterval)
-     var that = this; //function inside the set interval doesnt have access the object refering so keep the object on we refer variable to 
-    if (isTick) {
-        this.clockInterval = setInterval(function() {
-        that.updateClock()
-        }, 1000);
+    this.isTicking = isTick;
+    //clearInterval(this.clockInterval)
+     // var that = this; //function inside the set interval doesnt have access the object refering so keep the object on we refer variable to 
+    // if (isTick) {
+    //     this.clockInterval = setInterval(function() {
+    //     that.updateClock()
+    //     }, 1000);
         
-        this.updateClock();
-    }
+    //     this.updateClock();
+    // }
     
 
 }
 com.ankasoft.Clock.prototype.updateClock = function() {
-    var date = this.d
+    if ( this.isTicking) {
+            var date = this.d
      //date.updateSecond();
     var element = document.getElementById(this.id);
     element.innerHTML = this.formatDisplay(date.getHours(),date.getMinutes(),date.getSeconds(),this.label);
     //console.log(this);
+    };
+
 
 };
 com.ankasoft.Clock.prototype.formatDisplay =function(h,m,s,label){
@@ -130,7 +146,7 @@ com.ankasoft.AlarmClock = function(id, offset, label){
                 this.dispatchEvent(event);
 
         }
-        
+
         that.tick(true);
     });
     this.dom.addEventListener('restart_tick', function(){
